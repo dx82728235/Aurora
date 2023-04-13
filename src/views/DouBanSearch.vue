@@ -1,6 +1,18 @@
 <script setup>
-import { ref, reactive } from "vue";
-const searchResult = reactive([{ iName: "三体" }, { iName: "深海" }]);
+import { ref, reactive, onMounted } from "vue";
+const searchList = reactive([
+  { title: "三体", cover: "", cover_link: "1" },
+  { title: "三体", cover: "", cover_link: "2" },
+]);
+
+const getSearchList = () => {
+
+  // searchList = '';
+};
+
+onMounted(() => {
+  getSearchList();
+});
 </script>
 <template>
   <div class="douban-search">
@@ -9,14 +21,16 @@ const searchResult = reactive([{ iName: "三体" }, { iName: "深海" }]);
       <div class="search-container">
         <el-input />
       </div>
-      <ul>
-        <li
-          v-for="(resultItem, resultItemIndex) in searchResult"
-          :key="resultItemIndex"
-        >
-          {{ resultItem.iName }}
-        </li>
-      </ul>
+      <div class="demo-image">
+        <div v-for="item in searchList" :key="item.cover_link" class="block">
+          <el-image
+            style="width: 150px; height: 200px"
+            :src="item.cover"
+            fit="cover"
+          />
+          <span class="demonstration">{{ item.title }}</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -42,6 +56,28 @@ const searchResult = reactive([{ iName: "三体" }, { iName: "深海" }]);
   opacity: var(--bg-opacity);
 }
 .search-container {
-  width: 300px;
+  width: 350px;
+  margin-left: 23px;
+}
+
+.demo-image .block {
+  padding: 30px 0;
+  color: var(--text-color);
+  text-align: center;
+  display: inline-block;
+  width: 200px;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+.demo-image .block:last-child {
+  border-right: none;
+}
+.demo-image .demonstration {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
