@@ -26,12 +26,12 @@ const liveRooms = ref([
       <div class="demo-image">
         <div v-for="liveRoom in liveRooms" :key="liveRoom.id" class="block">
           <a :href="liveRoom.url" target="_blank">
-            <span class="demonstration">{{ liveRoom.name }}</span>
             <el-image
               style="width: 100px; height: 100px"
               :src="liveRoom.img"
               fit="cover"
             />
+            <span class="demonstration">{{ liveRoom.name }}</span>
           </a>
         </div>
       </div>
@@ -57,12 +57,12 @@ const liveRooms = ref([
   background-size: 100% 100%;
   background-attachment: fixed;
   background-repeat: no-repeat;
-  opacity: 0.6;
+  opacity: var(--bg-opacity);
 }
 .demo-image .block {
   padding: 30px 0;
+  color: var(--text-color);
   text-align: center;
-  border-right: solid 1px var(--el-border-color);
   display: inline-block;
   width: 200px;
   box-sizing: border-box;

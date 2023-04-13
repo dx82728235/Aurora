@@ -21,6 +21,7 @@ const defaultActive = computed(() => router.currentRoute._value.name);
     class="el-menu-demo"
     mode="vertical"
     @select="handleSelect"
+    text-color="var(--text-color)"
   >
     <el-menu-item
       :index="MenuRouter.name"

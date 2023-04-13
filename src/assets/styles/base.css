@@ -1,3 +1,9 @@
+:root {
+  --text-color: #424e68;
+  --bg-color: #f6ebf0;
+  --bg-opacity: 0.3;
+}
+
 body,
 html {
   width: 100%;
@@ -23,6 +29,6 @@ li {
 }
 
 a {
-  color: #000;
+  color:var(--text-color);
   text-decoration: none;
 }

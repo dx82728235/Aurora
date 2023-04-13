@@ -8,7 +8,6 @@
 .logo {
   width: 100%;
   text-align: center;
-  color: gray;
   border-bottom: solid 1px var(--el-menu-border-color);
 }
 .logo .logo-img {

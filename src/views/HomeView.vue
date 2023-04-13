@@ -31,7 +31,6 @@ main {
   flex-direction: column;
   width: 200px;
   height: 100%;
-  background-color: rgb(0, 0, 0, 0.1);
 }
 .left-part .menu {
   flex: 1;

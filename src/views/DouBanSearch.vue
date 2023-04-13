@@ -39,7 +39,7 @@ const searchResult = reactive([{ iName: "三体" }, { iName: "深海" }]);
   background-size: 100% 100%;
   background-attachment: fixed;
   background-repeat: no-repeat;
-  opacity: 0.6;
+  opacity: var(--bg-opacity);
 }
 .search-container {
   width: 300px;

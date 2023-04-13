@@ -10,7 +10,8 @@
   height: 49px;
   line-height: 49px;
   text-align: center;
-  color: gray;
+  color: var(--text-color);
   border-top: solid 1px var(--el-menu-border-color);
+  background-color: var(--bg-color);
 }
 </style>

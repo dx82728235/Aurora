@@ -1,12 +1,11 @@
 @import './base.css';
+@import './element.css';
 
 #app {
   font-weight: normal;
   height: 100%;
 }
-.el-menu {
-  height: 100%;
-}
+
 .page-container {
   padding: 20px;
 }
