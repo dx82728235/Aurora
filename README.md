@@ -1,29 +1,15 @@
-# aurora
+# Aurora
 
-This template should help get you started developing with Vue 3 in Vite.
+这是一个包含豆瓣搜索与跳转喜爱的直播间功能的，仅满足个人需求的一个项目
 
-## Recommended IDE Setup
+## 豆瓣搜索
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+开发中……
 
-## Customize configuration
+## 喜爱的直播
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+目前仅可跳转页面中包含的直播间。
 
-## Project Setup
+主要用来观看LPL比赛直播。
 
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+包括有“老实憨厚的笑笑”、“金咕咕金咕咕doinb”。
