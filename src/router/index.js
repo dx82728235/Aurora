@@ -1,0 +1,30 @@
+import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '../views/HomeView.vue'
+
+export const BaseRouters = [
+  {
+    path: '/doubansearch',
+    name: 'doubansearch',
+    component: () => import('../views/DouBanSearch.vue'),
+    cName: '豆瓣搜索'
+  },
+  {
+    path: '/favoritelive',
+    name: 'favoritelive',
+    component: () => import('../views/FavoriteLive.vue'),
+    cName: '喜爱的直播'
+  },
+]
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [{
+    path: '/',
+    name: 'home',
+    redirect: '/doubansearch',
+    component: HomeView,
+    children: BaseRouters
+  }],
+})
+
+export default router
