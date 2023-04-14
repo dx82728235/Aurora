@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ElMessageBox } from 'element-plus';
 
 const API = axios.create({
-  timeout: 5000, // 请求超时时间
+  timeout: 50000, // 请求超时时间
   baseURL: '/api',
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'

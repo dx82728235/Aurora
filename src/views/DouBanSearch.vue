@@ -1,39 +1,89 @@
 <script setup>
-import { ref } from "vue";
-import { getMoiveList } from "@/api";
+import { ref, computed } from "vue";
+import { getSearchDataList } from "@/api";
+import { attachImageUrl } from "@/utils";
 
 const searchList = ref([]);
+const searchOptions = ref([
+  { label: "电影", value: "movie" },
+  { label: "图书", value: "book" },
+  { label: "音乐", value: "music" },
+]);
 const keyName = ref("");
+const sType = ref("movie");
+
+const rating = ref("3.5");
 
 const getSearchList = async () => {
   try {
-    const { data } = await getMoiveList({
+    const { data } = await getSearchDataList({
+      urlParams: sType.value,
       key: keyName.value,
       page: 1,
     });
     searchList.value = data;
-    console.log(searchList)
   } catch (error) {}
 };
 
+const searchListComputed = computed(() =>
+  searchList.value.map((item) => {
+    return {
+      ...item,
+      cover: attachImageUrl(item.cover),
+      rating: parseFloat(item.rating) / 2,
+    };
+  })
+);
 </script>
 <template>
   <div class="douban-search page-container">
     <div class="page-main">
       <div class="page-bg page-bg-img"></div>
       <div class="search-container">
-        <el-input v-model="keyName" @keyup.enter="getSearchList" />
+        <el-input v-model="keyName" @keyup.enter="getSearchList">
+          <template #prepend>
+            <el-select
+              style="width: 80px"
+              v-model="sType"
+              class="m-2"
+              placeholder="Select"
+              size="large"
+            >
+              <el-option
+                v-for="opt in searchOptions"
+                :key="opt.value"
+                :label="opt.label"
+                :value="opt.value"
+              />
+            </el-select>
+          </template>
+          <template #append>
+            <el-button @click="getSearchList">搜 索</el-button>
+          </template>
+        </el-input>
       </div>
       <div class="demo-image">
-        <div v-for="item in searchList" :key="item.cover_link" class="block">
+        <div v-for="item in searchListComputed" :key="item.cover_link" class="block">
           <el-image
-            style="width: 150px; height: 200px"
+            style="width: 150px; height: 218px"
             :src="item.cover"
             fit="cover"
           />
+          <div class="rat-box">
+            <el-rate
+              v-model="item.rating"
+              :max="5"
+              size="small"
+              allow-half
+              disabled
+              show-score
+              :score-template="`${item.rating * 2 || ''}`"
+            />
+          </div>
           <span class="demonstration">{{ item.title }}</span>
         </div>
       </div>
+      <div></div>
     </div>
   </div>
 </template>
@@ -48,8 +98,9 @@ const getSearchList = async () => {
   background-image: url("image/bg2.jpeg");
 }
 .search-container {
-  width: 350px;
-  margin-left: 23px;
+  width: 60%;
+  min-width: 300px;
+  margin: 0 auto;
 }
 
 .demo-image .block {
