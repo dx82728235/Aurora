@@ -2,9 +2,9 @@
 import { ref, computed } from "vue";
 import { getSearchDataList } from "@/api";
 
-const searchList = ref([]);
-const searchOptions = ref([
-  { label: "电影", value: "movie" },
+const sList = ref([]);
+const sOptions = ref([
+  { label: "影视", value: "movie" },
   { label: "图书", value: "book" },
   { label: "音乐", value: "music" },
 ]);
@@ -18,12 +18,12 @@ const getSearchList = async () => {
       key: keyName.value,
       page: 1,
     });
-    searchList.value = data;
+    sList.value = data;
   } catch (error) {}
 };
 
-const searchListComputed = computed(() =>
-  searchList.value.map((item) => {
+const sListComputed = computed(() =>
+  sList.value.map((item) => {
     return {
       ...item,
       rating: parseFloat(item.rating) / 2,
@@ -46,7 +46,7 @@ const searchListComputed = computed(() =>
               size="large"
             >
               <el-option
-                v-for="opt in searchOptions"
+                v-for="opt in sOptions"
                 :key="opt.value"
                 :label="opt.label"
                 :value="opt.value"
@@ -54,12 +54,12 @@ const searchListComputed = computed(() =>
             </el-select>
           </template>
           <template #append>
-            <el-button @click="getSearchList">搜 索</el-button>
+            <el-button @click="getSearchList">搜索</el-button>
           </template>
         </el-input>
       </div>
       <div class="demo-image">
-        <div v-for="item in searchListComputed" :key="item.cover_link" class="block">
+        <div v-for="item in sListComputed" :key="item.cover_link" class="block">
           <el-image
             style="width: 150px; height: 218px"
             :src="item.cover"
