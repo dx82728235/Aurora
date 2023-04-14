@@ -4,7 +4,7 @@
 
 # 技术栈
 
-vue3 + vite + element+
+vue3 + vite + element+ + axios
 
 ## 豆瓣搜索
 
