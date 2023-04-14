@@ -8,7 +8,9 @@ vue3 + vite + element+
 
 ## 豆瓣搜索
 
-开发中……
+根据下拉框选项与搜索框输入的关键字查询相关影视、图书、音乐。
+
+感谢豆瓣搜索接口提供者 https://github.com/wanglin2/douban_api
 
 ## 喜爱的直播
 
