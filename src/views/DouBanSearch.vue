@@ -1,25 +1,28 @@
 <script setup>
-import { ref, reactive, onMounted } from "vue";
-const searchList = reactive([
-  { title: "三体", cover: "", cover_link: "1" },
-  { title: "三体", cover: "", cover_link: "2" },
-]);
+import { ref } from "vue";
+import { getMoiveList } from "@/api";
 
-const getSearchList = () => {
+const searchList = ref([]);
+const keyName = ref("");
 
-  // searchList = '';
+const getSearchList = async () => {
+  try {
+    const { data } = await getMoiveList({
+      key: keyName.value,
+      page: 1,
+    });
+    searchList.value = data;
+    console.log(searchList)
+  } catch (error) {}
 };
 
-onMounted(() => {
-  getSearchList();
-});
 </script>
 <template>
-  <div class="douban-search">
-    <div class="page-container">
-      <div class="page-bg"></div>
+  <div class="douban-search page-container">
+    <div class="page-main">
+      <div class="page-bg page-bg-img"></div>
       <div class="search-container">
-        <el-input />
+        <el-input v-model="keyName" @keyup.enter="getSearchList" />
       </div>
       <div class="demo-image">
         <div v-for="item in searchList" :key="item.cover_link" class="block">
@@ -41,19 +44,8 @@ onMounted(() => {
   height: 100%;
   position: relative;
 }
-.page-bg {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
+.page-bg-img {
   background-image: url("image/bg2.jpeg");
-  background-size: 100% 100%;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  opacity: var(--bg-opacity);
 }
 .search-container {
   width: 350px;
@@ -65,7 +57,7 @@ onMounted(() => {
   color: var(--text-color);
   text-align: center;
   display: inline-block;
-  width: 200px;
+  width: 190px;
   box-sizing: border-box;
   vertical-align: top;
 }
@@ -74,7 +66,7 @@ onMounted(() => {
 }
 .demo-image .demonstration {
   display: block;
-  font-size: 20px;
+  font-size: 14px;
   margin-bottom: 20px;
   overflow: hidden;
   text-overflow: ellipsis;

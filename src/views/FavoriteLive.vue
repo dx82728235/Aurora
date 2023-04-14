@@ -20,9 +20,9 @@ const liveRooms = ref([
 </script>
 
 <template>
-  <div class="favorite-live">
-    <div class="page-container">
-      <div class="page-bg"></div>
+  <div class="favorite-live page-container">
+    <div class="page-main">
+      <div class="page-bg page-bg-img"></div>
       <div class="demo-image">
         <div v-for="liveRoom in liveRooms" :key="liveRoom.id" class="block">
           <a :href="liveRoom.url" target="_blank">
@@ -45,19 +45,8 @@ const liveRooms = ref([
   height: 100%;
   position: relative;
 }
-.page-bg {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
+.page-bg-img {
   background-image: url("image/bg.jpeg");
-  background-size: 100% 100%;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  opacity: var(--bg-opacity);
 }
 .demo-image .block {
   padding: 30px 0;
@@ -73,7 +62,7 @@ const liveRooms = ref([
 }
 .demo-image .demonstration {
   display: block;
-  font-size: 20px;
+  font-size: 14px;
   margin-bottom: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
