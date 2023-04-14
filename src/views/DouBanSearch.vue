@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
 import { getSearchDataList } from "@/api";
-import { attachImageUrl } from "@/utils";
 
 const searchList = ref([]);
 const searchOptions = ref([
@@ -11,8 +10,6 @@ const searchOptions = ref([
 ]);
 const keyName = ref("");
 const sType = ref("movie");
-
-const rating = ref("3.5");
 
 const getSearchList = async () => {
   try {
@@ -29,7 +26,6 @@ const searchListComputed = computed(() =>
   searchList.value.map((item) => {
     return {
       ...item,
-      cover: attachImageUrl(item.cover),
       rating: parseFloat(item.rating) / 2,
     };
   })
@@ -68,6 +64,7 @@ const searchListComputed = computed(() =>
             style="width: 150px; height: 218px"
             :src="item.cover"
             fit="cover"
+            referrerpolicy="no-referrer"
           />
           <div class="rat-box">
             <el-rate
@@ -104,13 +101,17 @@ const searchListComputed = computed(() =>
 }
 
 .demo-image .block {
-  padding: 30px 0;
+  margin: 30px 16px;
+  padding-top: 3px;
   color: var(--text-color);
   text-align: center;
   display: inline-block;
-  width: 190px;
+  width: 156px;
   box-sizing: border-box;
   vertical-align: top;
+  background-color: #fff;
+  border-radius: 3%;
+  overflow: hidden;
 }
 .demo-image .block:last-child {
   border-right: none;
@@ -118,7 +119,6 @@ const searchListComputed = computed(() =>
 .demo-image .demonstration {
   display: block;
   font-size: 14px;
-  margin-bottom: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
