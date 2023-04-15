@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { getSearchDataList } from "@/api";
+import LoadingMask from "@/components/Loading.vue" 
 
 const sList = ref([]);
 const sOptions = ref([
@@ -10,16 +11,21 @@ const sOptions = ref([
 ]);
 const keyName = ref("");
 const sType = ref("movie");
+const mask = ref(false);
 
 const getSearchList = async () => {
   try {
+    mask.value = true;
     const { data } = await getSearchDataList({
       urlParams: sType.value,
       key: keyName.value,
       page: 1,
     });
     sList.value = data;
-  } catch (error) {}
+    mask.value = false;
+  } catch (error) {
+    mask.value = false;
+  }
 };
 
 const sListComputed = computed(() =>
@@ -82,6 +88,7 @@ const sListComputed = computed(() =>
       </div>
       <div></div>
     </div>
+    <LoadingMask :mask="mask"/>
   </div>
 </template>
 

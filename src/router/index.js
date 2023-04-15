@@ -14,6 +14,12 @@ export const BaseRouters = [
     component: () => import('../views/FavoriteLive.vue'),
     cName: '喜爱的直播'
   },
+  // {
+  //   path: '/ideas',
+  //   name: 'ideas',
+  //   component: () => import('../views/Ideas.vue'),
+  //   cName: '未来的想法'
+  // },
 ]
 
 const router = createRouter({
