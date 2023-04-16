@@ -1,7 +1,8 @@
 <script setup>
 import { ref, computed } from "vue";
 import { getSearchDataList } from "@/api";
-import LoadingMask from "@/components/Loading.vue" 
+import LoadingMask from "@/components/Loading.vue";
+import CupfoxSvg from "@/components/CupfoxSvg.vue";
 
 const sList = ref([]);
 const sOptions = ref([
@@ -9,7 +10,7 @@ const sOptions = ref([
   { label: "图书", value: "book" },
   { label: "音乐", value: "music" },
 ]);
-const keyName = ref("");
+const keyName = ref("三体");
 const sType = ref("movie");
 const mask = ref(false);
 
@@ -32,6 +33,7 @@ const sListComputed = computed(() =>
   sList.value.map((item) => {
     return {
       ...item,
+      title: item.title.replaceAll("\u200E", "").trim(),
       rating: parseFloat(item.rating) / 2,
     };
   })
@@ -66,6 +68,7 @@ const sListComputed = computed(() =>
       </div>
       <div class="demo-image">
         <div v-for="item in sListComputed" :key="item.cover_link" class="block">
+          <CupfoxSvg :title="item.title" />
           <el-image
             style="width: 150px; height: 218px"
             :src="item.cover"
@@ -88,7 +91,7 @@ const sListComputed = computed(() =>
       </div>
       <div></div>
     </div>
-    <LoadingMask :mask="mask"/>
+    <LoadingMask :mask="mask" />
   </div>
 </template>
 
@@ -119,6 +122,7 @@ const sListComputed = computed(() =>
   background-color: #fff;
   border-radius: 3%;
   overflow: hidden;
+  position: relative;
 }
 .demo-image .block:last-child {
   border-right: none;
