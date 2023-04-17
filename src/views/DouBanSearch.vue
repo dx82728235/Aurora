@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import { getSearchDataList } from "@/api";
 import LoadingMask from "@/components/Loading.vue";
-import CupfoxSvg from "@/components/CupfoxSvg.vue";
+import IconfontSvg from "@/components/IconfontSvg.vue";
 
 const sList = ref([]);
 const sOptions = ref([
@@ -68,7 +68,17 @@ const sListComputed = computed(() =>
       </div>
       <div class="demo-image">
         <div v-for="item in sListComputed" :key="item.cover_link" class="block">
-          <CupfoxSvg :title="item.title" />
+          <el-popover placement="bottom-end" trigger="click">
+            <template #reference>
+              <div class="demo-more-icon">
+                <IconfontSvg icon-code="icon-more1" />
+              </div>
+            </template>
+            <div class="demo-more-content">
+              <IconfontSvg icon-code="cupfox" :cover-link="item.title" />
+              <IconfontSvg icon-code="icon-social-douban" :cover-link="item.cover_link" />
+            </div>
+          </el-popover>
           <el-image
             style="width: 150px; height: 218px"
             :src="item.cover"
@@ -112,11 +122,11 @@ const sListComputed = computed(() =>
 
 .demo-image .block {
   margin: 30px 16px;
-  padding-top: 3px;
+  padding-top: 18px;
   color: var(--text-color);
   text-align: center;
   display: inline-block;
-  width: 156px;
+  width: 166px;
   box-sizing: border-box;
   vertical-align: top;
   background-color: #fff;
@@ -133,5 +143,18 @@ const sListComputed = computed(() =>
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.demo-image .demo-more-icon {
+  position: absolute;
+  right: 9px;
+  top: 0px;
+  z-index: 1;
+  cursor: pointer;
+  font-size: 20px;
+}
+.demo-more-content {
+  display: flex;
+  justify-content: space-around;
+  font-size: 23px;
 }
 </style>

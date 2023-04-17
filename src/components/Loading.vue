@@ -21,7 +21,7 @@ defineProps({
   bottom: 0;
   right: 0;
   top: 0;
-  z-index: 100;
+  z-index: 100000;
 }
 .loading .loading-mask {
   width: 100%;
@@ -38,7 +38,7 @@ defineProps({
   bottom: 0;
   right: 0;
   top: 0;
-  z-index: 101;
+  z-index: 100001;
   margin: auto;
   text-align: center;
 }
