@@ -1,31 +1,12 @@
 <script setup>
-import { ref } from "vue";
-
-const { coverLink, iconCode } = defineProps({
-  coverLink: {
-    default: '',
-    type: String
-  },
-  iconCode: {
-    default: '',
-    type: String
-  },
+defineProps({
+  coverLink: String,
+  iconCode: String,
 });
-
-const handleUrl = () => {
-  if (coverLink) {
-    return iconCode === "cupfox"
-      ? "https://cupfox.app/s/" + coverLink
-      : coverLink;
-  } else {
-    return "javascript:"
-  }
-};
-const targetUrl = ref(handleUrl());
 
 </script>
 <template>
-  <a :href="targetUrl" target="_blank" class="iconfont-svg">
+  <a :href="`${coverLink || 'javascript:'}`" target="_blank" class="iconfont-svg">
     <template v-if="iconCode === 'cupfox'">
       <svg
         width="32px"

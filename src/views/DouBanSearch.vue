@@ -75,7 +75,7 @@ const sListComputed = computed(() =>
               </div>
             </template>
             <div class="demo-more-content">
-              <IconfontSvg icon-code="cupfox" :cover-link="item.title" />
+              <IconfontSvg icon-code="cupfox" :cover-link="`https://cupfox.app/s/${item.title}`" />
               <IconfontSvg icon-code="icon-social-douban" :cover-link="item.cover_link" />
             </div>
           </el-popover>
