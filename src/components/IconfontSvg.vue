@@ -11,6 +11,7 @@ defineProps({
       <svg
         width="32px"
         height="23px"
+        style="padding-top:4px"
         viewBox="0 0 600 468"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
@@ -77,8 +78,6 @@ defineProps({
 
 <style>
 .iconfont-svg {
-  display: flex;
-  align-items: center;
   cursor: pointer;
 }
 </style>

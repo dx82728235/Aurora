@@ -1,17 +1,26 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watchEffect } from "vue";
 import { getSearchDataList } from "@/api";
 import LoadingMask from "@/components/Loading.vue";
 import IconfontSvg from "@/components/IconfontSvg.vue";
 
 const sList = ref([]);
+const keyName = ref("");
+
+const sType = ref("movie");
 const sOptions = ref([
   { label: "影视", value: "movie" },
   { label: "图书", value: "book" },
   { label: "音乐", value: "music" },
 ]);
-const keyName = ref("三体");
-const sType = ref("movie");
+
+const sortRadio = ref("default");
+const sortOptions = ref([
+  { label: "综合", value: "default" },
+  { label: "近期", value: "time" },
+  { label: "高分", value: "score" },
+]);
+
 const mask = ref(false);
 
 const getSearchList = async () => {
@@ -22,7 +31,8 @@ const getSearchList = async () => {
       key: keyName.value,
       page: 1,
     });
-    sList.value = data;
+    sList.value = data || [];
+    localStorage.setItem("baseSList", JSON.stringify(data));
     mask.value = false;
   } catch (error) {
     mask.value = false;
@@ -38,6 +48,24 @@ const sListComputed = computed(() =>
     };
   })
 );
+
+const sortSList = () => {
+  sList.value.sort((a, b) => {
+    if (sortRadio.value === "time") {
+      return Number(b.year) - Number(a.year);
+    }
+    if (sortRadio.value === "score") {
+      return parseFloat(b.rating || 0) - parseFloat(a.rating || 0);
+    }
+  });
+};
+
+const handleSort = (v) => {
+  if (v === "default") {
+    return (sList.value = JSON.parse(localStorage.getItem("baseSList")));
+  }
+  sortSList();
+};
 </script>
 <template>
   <div class="douban-search page-container">
@@ -66,6 +94,16 @@ const sListComputed = computed(() =>
           </template>
         </el-input>
       </div>
+      <div class="demo-sort" v-show="sListComputed.length > 0">
+        <el-radio-group v-model="sortRadio" size="large" @change="handleSort">
+          <el-radio-button
+            v-for="opt in sortOptions"
+            :key="opt.value"
+            :label="opt.value"
+            >{{ opt.label }}</el-radio-button
+          >
+        </el-radio-group>
+      </div>
       <div class="demo-image">
         <div v-for="item in sListComputed" :key="item.cover_link" class="block">
           <el-popover placement="bottom-end" trigger="click">
@@ -75,16 +113,24 @@ const sListComputed = computed(() =>
               </div>
             </template>
             <div class="demo-more-content">
-              <IconfontSvg icon-code="cupfox" :cover-link="`https://cupfox.app/s/${item.title}`" />
-              <IconfontSvg icon-code="icon-social-douban" :cover-link="item.cover_link" />
+              <IconfontSvg
+                icon-code="cupfox"
+                :cover-link="`https://cupfox.app/s/${item.title}`"
+              />
+              <IconfontSvg
+                icon-code="icon-social-douban"
+                :cover-link="item.cover_link"
+              />
             </div>
           </el-popover>
-          <el-image
-            style="width: 150px; height: 218px"
-            :src="item.cover"
-            fit="cover"
-            referrerpolicy="no-referrer"
-          />
+          <a :href="item.cover_link" target="_blank">
+            <el-image
+              style="width: 150px; height: 218px"
+              :src="item.cover"
+              fit="cover"
+              referrerpolicy="no-referrer"
+            />
+          </a>
           <div class="rat-box">
             <el-rate
               v-model="item.rating"
@@ -97,6 +143,7 @@ const sListComputed = computed(() =>
             />
           </div>
           <span class="demonstration">{{ item.title }}</span>
+          <span class="demonstration">({{ item.year }})</span>
         </div>
       </div>
       <div></div>
@@ -119,10 +166,13 @@ const sListComputed = computed(() =>
   min-width: 300px;
   margin: 0 auto;
 }
-
+.demo-sort {
+  margin-top: 15px;
+  margin-left: 20px;
+}
 .demo-image .block {
   margin: 30px 16px;
-  padding-top: 18px;
+  padding-top: 6px;
   color: var(--text-color);
   text-align: center;
   display: inline-block;
@@ -146,8 +196,8 @@ const sListComputed = computed(() =>
 }
 .demo-image .demo-more-icon {
   position: absolute;
-  right: 9px;
-  top: 0px;
+  right: 11px;
+  bottom: 0px;
   z-index: 1;
   cursor: pointer;
   font-size: 20px;
