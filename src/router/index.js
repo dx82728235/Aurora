@@ -14,6 +14,12 @@ export const BaseRouters = [
     component: () => import('../views/FavoriteLive.vue'),
     cName: '喜爱的直播'
   },
+  {
+    path: '/theme',
+    name: 'theme',
+    component: () => import('../views/Theme.vue'),
+    cName: '彻夜之歌'
+  },
   // {
   //   path: '/ideas',
   //   name: 'ideas',

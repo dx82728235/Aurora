@@ -1,8 +1,9 @@
 <script setup>
-import { ref, computed, watchEffect } from "vue";
+import { ref, computed } from "vue";
 import { getSearchDataList } from "@/api";
 import LoadingMask from "@/components/Loading.vue";
 import IconfontSvg from "@/components/IconfontSvg.vue";
+import { getWallpaper } from "@/utils";
 
 const sList = ref([]);
 const keyName = ref("");
@@ -70,7 +71,10 @@ const handleSort = (v) => {
 <template>
   <div class="douban-search page-container">
     <div class="page-main">
-      <div class="page-bg page-bg-img"></div>
+      <div
+        class="page-bg"
+        :style="{ backgroundImage: `url(${getWallpaper('doubansearch')})` }"
+      ></div>
       <div class="search-container">
         <el-input v-model="keyName" @keyup.enter="getSearchList">
           <template #prepend>
@@ -157,9 +161,6 @@ const handleSort = (v) => {
   width: 100%;
   height: 100%;
   position: relative;
-}
-.page-bg-img {
-  background-image: url("image/bg2.jpeg");
 }
 .search-container {
   width: 60%;

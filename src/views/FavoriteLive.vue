@@ -1,20 +1,19 @@
 <script setup>
 import { ref } from "vue";
-import XiaoXiaoJpg from "image/xiaoxiao.jpg";
-import DoinbJpg from "image/doinb.jpeg";
+import { getImagePath, getWallpaper } from "@/utils";
 
 const liveRooms = ref([
   {
     id: "0",
     name: "老实憨厚的笑笑",
     url: "https://live.bilibili.com/7777",
-    img: XiaoXiaoJpg,
+    img: getImagePath('image/xiaoxiao.jpg'),
   },
   {
     id: "2",
     name: "金咕咕金咕咕doinb",
     url: "https://www.douyu.com/topic/Doinblplcjs_new?rid=252140",
-    img: DoinbJpg,
+    img:getImagePath('image/doinb.jpeg'),
   },
 ]);
 </script>
@@ -22,7 +21,10 @@ const liveRooms = ref([
 <template>
   <div class="favorite-live page-container">
     <div class="page-main">
-      <div class="page-bg page-bg-img"></div>
+      <div
+        class="page-bg"
+        :style="{ backgroundImage: `url(${getWallpaper('favoritelive')})` }"
+      ></div>
       <div class="demo-image">
         <div v-for="liveRoom in liveRooms" :key="liveRoom.id" class="block">
           <a :href="liveRoom.url" target="_blank">
