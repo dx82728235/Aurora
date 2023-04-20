@@ -46,12 +46,13 @@ const setWallpaper = ({ name, cName }, path) => {
         class="page-bg"
         :style="{ backgroundImage: `url(${getWallpaper('theme')})` }"
       ></div>
-      <div class="theme-image__preview" v-for="path in picPathList" :key="path">
+      <div class="theme-image__preview" v-for="(path, initialIndex) in picPathList" :key="path">
         <el-image
           style="width: 150px; height: 150px"
           :src="path"
           :zoom-rate="1.2"
-          :preview-src-list="[path]"
+          :initial-index="initialIndex"
+          :preview-src-list="picPathList"
           fit="cover"
         />
         <el-popover title="选择页面" placement="top-start" trigger="click">

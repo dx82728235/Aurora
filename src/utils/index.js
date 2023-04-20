@@ -8,3 +8,11 @@ export const getWallpaper = (pageName) => {
     const wallpapers = JSON.parse(localStorage.getItem("wallpapers")) || [];
     return wallpapers.find((item) => item.name === pageName)?.path;
 }
+
+// 深拷贝
+export const deepClone = (obj) => {
+    if (typeof obj === 'object') {
+        return JSON.parse(JSON.stringify(obj))
+    }
+    return obj;
+} 

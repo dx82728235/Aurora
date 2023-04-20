@@ -1,28 +1,29 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import { getSearchDataList } from "@/api";
 import LoadingMask from "@/components/Loading.vue";
 import IconfontSvg from "@/components/IconfontSvg.vue";
-import { getWallpaper } from "@/utils";
+import { getWallpaper, deepClone } from "@/utils";
 
-const sList = ref([]);
 const keyName = ref("");
-
+const sList = ref([]);
+const baseSList = ref([]);
+const pageNum = ref(1);
+const mask = ref(false);
 const sType = ref("movie");
 const sOptions = ref([
   { label: "影视", value: "movie" },
   { label: "图书", value: "book" },
   { label: "音乐", value: "music" },
 ]);
-
 const sortRadio = ref("default");
 const sortOptions = ref([
   { label: "综合", value: "default" },
   { label: "近期", value: "time" },
   { label: "高分", value: "score" },
 ]);
-
-const mask = ref(false);
+const content = ref();
+const inTheEnd = ref(false);
 
 const getSearchList = async () => {
   try {
@@ -30,25 +31,25 @@ const getSearchList = async () => {
     const { data } = await getSearchDataList({
       urlParams: sType.value,
       key: keyName.value,
-      page: 1,
+      page: pageNum.value,
     });
-    sList.value = data || [];
-    localStorage.setItem("baseSList", JSON.stringify(data));
+    if (data instanceof Array && data.length === 0) {
+      inTheEnd.value = true;
+    }
+    sList.value = [...sList.value, ...(data || [])];
+    baseSList.value = deepClone(sList.value);
     mask.value = false;
   } catch (error) {
     mask.value = false;
   }
 };
 
-const sListComputed = computed(() =>
-  sList.value.map((item) => {
-    return {
-      ...item,
-      title: item.title.replaceAll("\u200E", "").trim(),
-      rating: parseFloat(item.rating) / 2,
-    };
-  })
-);
+const handleSearch = () => {
+  sList.value = [];
+  pageNum.value = 1;
+  inTheEnd.value = false;
+  getSearchList();
+};
 
 const sortSList = () => {
   sList.value.sort((a, b) => {
@@ -63,20 +64,51 @@ const sortSList = () => {
 
 const handleSort = (v) => {
   if (v === "default") {
-    return (sList.value = JSON.parse(localStorage.getItem("baseSList")));
+    return (sList.value = deepClone(baseSList.value));
   }
   sortSList();
 };
+
+const doScroll = (event) => {
+  if (inTheEnd.value) return;
+
+  const scrollHeight = event.target.scrollHeight;
+  const scrollTop = event.target.scrollTop;
+  const clientHeight = event.target.clientHeight;
+
+  if (scrollTop + clientHeight >= scrollHeight) {
+    pageNum.value += 1;
+    getSearchList();
+  }
+};
+
+const sListComputed = computed(() =>
+  sList.value.map((item) => {
+    return {
+      ...item,
+      title: item.title.replaceAll("\u200E", "").trim(),
+      rating: parseFloat(item.rating) / 2,
+    };
+  })
+);
+
+onMounted(() => {
+  content.value.addEventListener("scroll", doScroll);
+});
+
+onUnmounted(() => {
+  content.value.removeEventListener("scroll", doScroll);
+});
 </script>
 <template>
-  <div class="douban-search page-container">
+  <div ref="content" class="douban-search page-container">
     <div class="page-main">
       <div
         class="page-bg"
         :style="{ backgroundImage: `url(${getWallpaper('doubansearch')})` }"
       ></div>
       <div class="search-container">
-        <el-input v-model="keyName" @keyup.enter="getSearchList">
+        <el-input v-model="keyName" @keyup.enter="handleSearch">
           <template #prepend>
             <el-select
               style="width: 80px"
@@ -94,7 +126,7 @@ const handleSort = (v) => {
             </el-select>
           </template>
           <template #append>
-            <el-button @click="getSearchList">搜索</el-button>
+            <el-button @click="handleSearch">搜索</el-button>
           </template>
         </el-input>
       </div>
@@ -150,7 +182,7 @@ const handleSort = (v) => {
           <span class="demonstration">({{ item.year }})</span>
         </div>
       </div>
-      <div></div>
+      <div v-if="inTheEnd" class="in-the-end">已经到底了～</div>
     </div>
     <LoadingMask :mask="mask" />
   </div>
@@ -207,5 +239,9 @@ const handleSort = (v) => {
   display: flex;
   justify-content: space-around;
   font-size: 23px;
+}
+.in-the-end {
+  color: gray;
+  text-align: center;
 }
 </style>
