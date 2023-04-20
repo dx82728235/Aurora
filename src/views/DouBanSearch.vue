@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { getSearchDataList } from "@/api";
 import LoadingMask from "@/components/Loading.vue";
 import IconfontSvg from "@/components/IconfontSvg.vue";
@@ -96,8 +96,8 @@ onMounted(() => {
   content.value.addEventListener("scroll", doScroll);
 });
 
-onUnmounted(() => {
-  content.value.removeEventListener("scroll", doScroll);
+onBeforeUnmount(() => {
+  content.value.removeEventListener("scroll");
 });
 </script>
 <template>
