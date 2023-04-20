@@ -3,7 +3,8 @@ import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { getSearchDataList } from "@/api";
 import LoadingMask from "@/components/Loading.vue";
 import IconfontSvg from "@/components/IconfontSvg.vue";
-import { getWallpaper, deepClone } from "@/utils";
+import Background from "@/components/Background.vue";
+import { deepClone } from "@/utils";
 
 const keyName = ref("");
 const sList = ref([]);
@@ -97,16 +98,13 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  content.value.removeEventListener("scroll");
+  content.value.removeEventListener("scroll", doScroll);
 });
 </script>
 <template>
   <div ref="content" class="douban-search page-container">
     <div class="page-main">
-      <div
-        class="page-bg"
-        :style="{ backgroundImage: `url(${getWallpaper('doubansearch')})` }"
-      ></div>
+      <Background page-name="doubansearch" />
       <div class="search-container">
         <el-input v-model="keyName" @keyup.enter="handleSearch">
           <template #prepend>

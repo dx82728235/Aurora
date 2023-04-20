@@ -1,13 +1,15 @@
 <script setup>
-import { getWallpaper, getImagePath } from "@/utils";
+import { getImagePath } from "@/utils";
 import { BaseRouters } from "@/router";
 import { ElMessage } from "element-plus";
+import Background from "@/components/Background.vue";
 
 const picPathList = [
   "image/bg3.jpg",
   "image/bg.jpeg",
   "image/bg2.jpeg",
   "image/nazina.jpeg",
+  "image/nazina2.jpeg",
 ].map((path) => getImagePath(path));
 const pags = BaseRouters.map((router) => ({
   name: router.name,
@@ -42,11 +44,12 @@ const setWallpaper = ({ name, cName }, path) => {
 <template>
   <div class="theme page-container">
     <div class="page-main">
+      <Background page-name="theme" />
       <div
-        class="page-bg"
-        :style="{ backgroundImage: `url(${getWallpaper('theme')})` }"
-      ></div>
-      <div class="theme-image__preview" v-for="(path, initialIndex) in picPathList" :key="path">
+        class="theme-image__preview"
+        v-for="(path, initialIndex) in picPathList"
+        :key="path"
+      >
         <el-image
           style="width: 150px; height: 150px"
           :src="path"
